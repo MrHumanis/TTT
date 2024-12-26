@@ -1,0 +1,3 @@
+from mariadb:11
+env MARIADB_ROOT_PASSWORD rootpswd
+env MARIADB_DATABASE database

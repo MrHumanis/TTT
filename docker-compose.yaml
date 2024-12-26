@@ -1,0 +1,26 @@
+services:
+    database:
+        image: mrhumanis/tt_db
+        ports:
+            - 15791:3306
+        command: --lower_case_table_names=1
+        healthcheck:
+            test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+            start_period: 3s
+            interval: 6s
+            timeout: 10s
+            retries: 7
+
+    task_service:
+        image: mrhumanis/tt_service
+        ports:
+            - 43782:8000
+        environment:
+            - db_name=database
+            - db_user=root
+            - db_password=rootpswd
+            - db_host=database
+            - db_port=3306
+        depends_on:
+            database:
+                condition: service_healthy
